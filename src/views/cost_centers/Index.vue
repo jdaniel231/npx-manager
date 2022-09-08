@@ -5,7 +5,7 @@
 </template>
 <script>
   export default {
-      name: "cost_center",
+      name: "cost_centers",
       data: () => ({
       //
       }),
