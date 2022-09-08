@@ -1,125 +1,146 @@
-<template>
-  <nav>
-    <v-app-bar color="#232620" dark app class="line" height="90" >
-      <v-chip 
-        class="ma-2" 
-        color="grey darken-1" 
-        pill      
-      >
-        Dashboard
-          <v-icon right small color="cyan"> fas fa-chevron-circle-down </v-icon>
-      </v-chip>
-      <v-spacer></v-spacer>
-      <v-text-field 
-        filled 
-        dense r
-        rounded 
-        label="Pesquisar" 
-        prepend-inner-icon="fas fa-search" 
-        class="mt-6 mr-2" sm="2"
-      ></v-text-field>
-      <v-btn fab color="cyan" elevation="0" class="mr-2" >
-        <v-icon color="white">fas fa-user</v-icon>
-      </v-btn> 
-      <v-btn fab color="orange" elevation="0" >
-        <v-icon color="white" >fas fa-bars</v-icon>
-      </v-btn>
-    </v-app-bar> 
-    <v-navigation-drawer v-model="drawer" dark app with="100" color="#23262D">
-      <v-list>
-        <v-list-item>
-          <v-list-item-avatar>
-           <v-icon>fa-solid fa-user</v-icon>
-          </v-list-item-avatar>
-        </v-list-item>
+<template>  
+  <v-navigation-drawer v-model="drawer" dark app with="100" color="black">
+    <v-list>
+      <v-list-item>
+        <v-list-item-avatar>
+          <v-icon>fa-solid fa-user</v-icon>
+        </v-list-item-avatar>
+      </v-list-item>
 
-        <v-list-item link>
+      <v-list-item link>
+        <v-list-item-content>
+          <v-list-item-title class="text-h6">
+            Joao Daniel
+          </v-list-item-title>
+          <v-list-item-subtitle>joao.oliveira@npx.com</v-list-item-subtitle>
+        </v-list-item-content>
+
+        <v-list-item-action>
+          <v-icon>mdi-menu-down</v-icon>
+        </v-list-item-action>
+      </v-list-item>
+    </v-list>
+
+    <v-divider></v-divider>
+    
+    <v-list>
+      <v-list-group
+        v-for="item in items"
+        :key="item.title"
+        v-model="item.active"
+        link 
+        
+      >
+
+        <template v-slot:activator>
+          <v-list-item-icon>
+            <v-icon  style=" font-size: 14px"  v-text="item.action" ></v-icon>
+          </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title class="text-h6">
-              Joao Daniel
-            </v-list-item-title>
-            <v-list-item-subtitle>joao.oliveira@npx.com</v-list-item-subtitle>
+            <v-list-item-title style=" font-size: 14px"  v-text="item.title"></v-list-item-title>
           </v-list-item-content>
+        </template>
 
-          <v-list-item-action>
-            <v-icon>mdi-menu-down</v-icon>
-          </v-list-item-action>
+        <v-list-item
+          v-for=" child in item.items"
+          :to="child.path"
+          :key="child.title"
+        >
+          <v-list-item-content>
+            <v-list-item-title  style=" font-size: 14px"  v-text="child.title"></v-list-item-title>
+          </v-list-item-content>
+          <v-list-item-icon>
+            <v-icon  style=" font-size: 14px" v-text="child.icon" ></v-icon>
+          </v-list-item-icon>
         </v-list-item>
-      </v-list>
-      <v-divider></v-divider>
-     
-     
-     
-      <v-list 
-        nav 
-        class="mt-5"
-        dense
-      >
-       <!-- paxb io -->
-        <v-list-group
-          
-          prepend-icon="fa-solid fa-phone-flip"
-          color="orange darken-3"
-        >
-          <template v-slot:activator>
-            <v-list-item-content>
-              <v-list-item-title>PABX IP</v-list-item-title>
-            </v-list-item-content>
-          </template>
-          <v-list-item
-            v-for="([title, icon, path], i) in pabx"
-            :key="i"
-            :to="path"
-            link
-          >
-            <v-list-item-title v-text="title"></v-list-item-title>
-            <v-list-item-icon>
-              <v-icon v-text="icon" ></v-icon>
-            </v-list-item-icon>
-          </v-list-item>         
-        </v-list-group>
 
-        <!-- Gestao RH -->
-        <v-list-group
-          :value="true"
-          prepend-icon="fas fa-user"
-          color="orange darken-3"
-           v-model="selected"
-        >
-          <template v-slot:activator>
-            <v-list-item-content>
-              <v-list-item-title> RH</v-list-item-title>
-            </v-list-item-content>
-          </template>
-          <v-list-item
-            v-for="([title, icon, path], i) in rh"
-            :key="i"
-            :to="path"
-            link
-          >
-            <v-list-item-title v-text="title"></v-list-item-title>
-            <v-list-item-icon>
-              <v-icon v-text="icon" ></v-icon>
-            </v-list-item-icon>
-          </v-list-item>         
-        </v-list-group>
-      </v-list>
-    </v-navigation-drawer>
-  </nav>
+      </v-list-group>
+    </v-list>
+  </v-navigation-drawer>
 </template>
 
 <script>
   export default {
+    props:['drawer'],
+    name:' Sidebar',
+
     data: () => ({
-      drawer: null,
-      selected: 0,
-      pabx:[
-        ["Empresa", "fas fa-building", "/companies"],
-        ["Centro do custo", "fas fa-dollar-sign", "/cost_center"]
-      ],
-      rh:[
-        ["Colaboradores", "fas fa-hand-holding-medical", "/collaborators"],
+      items:[
+      {
+        action: 'fas fa-phone',
+        title: 'PABX IP',
+        items:[
+          {title: 'Empresa', icon: 'fas fa-building', path:'/companies'},
+          {title: 'Centro do custo', icon: 'fas fa-dollar-sign', path:'/cost_centers'},
+         ]
+      },{
+        action: 'fas fa-user',
+        items:[
+          {title: 'Colaboradores', icon: 'fas fa-hand-holding-usd', path:'/collaborators'},
+        ],
+        title: 'Gestao de pessoa /RH'
+      },     
+      
       ]
     })
   }
 </script>
+
+<style>
+
+.border  {
+   
+    background: #F5F6FA ;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+      text-decoration: none;
+    
+}
+.border b:nth-child(1)
+{
+    
+    position: absolute;
+    top: -20px;
+    height: 20px;
+    width: 83%;
+    background: #BDBDBD;
+  
+    display: none; 
+}
+.border b:nth-child(1)::before
+{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-bottom-right-radius: 20px;
+    background: #BDBDBD;
+}
+.border b:nth-child(2)
+{
+    position: absolute;
+    bottom: -20px;
+    height: 20px;
+    width: 83%;
+    background: #BDBDBD;
+    display: none;
+}
+.border b:nth-child(2)::before
+{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-top-right-radius: 20px;
+    background: #BDBDBD;
+}
+.border b:nth-child(1),
+.border b:nth-child(2)
+{
+    display: block;
+}
+</style>
