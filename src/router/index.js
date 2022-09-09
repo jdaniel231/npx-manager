@@ -15,6 +15,11 @@ const routes = [
     component: () => import('../views/companies/Index')
   },
   {
+    path: '/companies/new',
+    name: 'NewCompany',
+    component: () => import('../views/companies/New')
+  },
+  {
     path: '/cost_centers',
     name: 'cost_centers',
     component: () => import('../views/cost_centers/Index')
