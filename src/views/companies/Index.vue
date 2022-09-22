@@ -22,17 +22,24 @@
               <v-icon>mdi-plus</v-icon>
             </v-btn>
           </v-app-bar>
-          <List />
+          <List :companies="companies" />
         </v-card>
       </v-col>
     </v-row>
   </div>
 </template>
+
 <script>
-import List from '../../components/companies/List.vue';
+
+  import List from '../../components/companies/List.vue';
+  import { Factory } from '../../api/factory';
+
+  const CompanyApi = Factory.get("companies")
+
   export default {
-    name: "companies",
+    name: "Companies",
     data: () => ({
+      companies: [],
       items: [
         {
           text: "Dashboard",
@@ -47,10 +54,22 @@ import List from '../../components/companies/List.vue';
       ]
     }),
     components: { List },
+    created: function() {
+      this.list()
+    },
     methods: {
       newCompany(){
         this.$router.push("/companies/new")
+      },
+     
+      list(){
+        CompanyApi.list({}).then(response => {
+          this.companies = response.data
+        }).catch(err => {
+          console.log(err.response)
+        })
       }
+      
     }
 };
 </script>
