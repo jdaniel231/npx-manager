@@ -1,5 +1,10 @@
 <template>
-  <v-simple-table>
+  <v-simple-table
+    :dense="dense"
+    :fixed-header="fixedHeader"
+    :height="height"
+    
+  >
     <template v-slot:default >
       <thead>
         <tr>
@@ -9,8 +14,8 @@
       </thead>
       <tbody>
         <tr
-          v-for="item in desserts"
-          :key="item.name"
+          v-for="item in companies"
+          :key="item.id"
         >
           <td class="text-center">{{item.name}}</td>
           <td class="text-center">
@@ -28,16 +33,27 @@
 </template>
 
 <script>
+
+  import { Factory } from '../../api/factory'
+  const CompanyApi = Factory.get("companies")
+
   export default {
-    data () {
-      return{
-        desserts:[
-          {name: 'NPX'},
-          {name: 'Restaurante A'},
-          {name: 'Restaurante B'},
-          {name: 'Restaurante C'},
-          {name: 'Restaurante D'},
-        ]
+    name: 'ListCompanies',
+    props: {
+      companies: Array
+    },
+    data: () => ({
+      dense: false,
+      fixedHeader: true,
+      height: 640
+    }),  
+    methods: {
+      list(){
+        CompanyApi.list({}).then(response => {
+          this.companies = response.data
+        }).catch(err => {
+          console.log(err.response)
+        })
       }
     }
   }
