@@ -20,6 +20,11 @@ const routes = [
     component: () => import('../views/companies/New')
   },
   {
+    path: '/companies/:id/edit',
+    name: 'EditCompany',
+    component: () => import('../views/companies/Edit')
+  },
+  {
     path: '/cost_centers',
     name: 'cost_centers',
     component: () => import('../views/cost_centers/Index')

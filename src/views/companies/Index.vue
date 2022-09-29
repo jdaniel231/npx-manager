@@ -47,7 +47,7 @@
           href: "/",
         },
         {
-          text: "Empresa",
+          text: "Organização",
           disabled: true,
 
         }

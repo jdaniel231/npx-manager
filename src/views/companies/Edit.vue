@@ -11,7 +11,7 @@
     <v-card min-height="auto">
       <v-app-bar>
         <v-toolbar-title>
-          <span>Cadastro</span>
+          <span>Editar</span>
         </v-toolbar-title>
 
         <v-spacer></v-spacer>
@@ -38,7 +38,7 @@ import { Factory } from "../../api/factory";
 const CompanyApi = Factory.get("companies")
 
 export default {
-  name: "NewCompany",
+  name: "EditCompany",
   data: () => ({
     company: {},
     items: [
@@ -53,23 +53,37 @@ export default {
         href: "/companies",
       },
       {
-        text: "Novo",
+        text: "Editar",
         disabled: true,
       }
     ]
   }),
+  created: function() {
+    this.listId();
+  },
   methods: {
+    listId: function(){
+      let id = this.$route.params.id
+      CompanyApi.getId(id).then(response => {
+        this.company = response.data;
+      }).catch(err => {
+        console.log(err.response)
+      })
+    },
     back: function () {
       this.$router.push("/companies");
     },
-    save: function() {
-      CompanyApi.save(this.company).then(response => {
+    save: function () {
+      CompanyApi.update(this.company.id, this.company).then((response) => {
         this.company.id = response.data.id;
         this.back();
-      }) 
+      })
     }
+    
   },
-  components: { Form }
+  components: { 
+    Form 
+  }
 }
 </script>
 

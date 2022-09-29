@@ -14,15 +14,14 @@
       </thead>
       <tbody>
         <tr
-          v-for="item in companies"
-          :key="item.id"
+          v-for="item in companies" :key="item.id"
         >
           <td class="text-center">{{item.name}}</td>
           <td class="text-center">
-            <v-btn small icon class="mx-3">
+            <v-btn small icon class="mx-3" @click="edit(item.id)">
               <v-icon> mdi-pencil </v-icon>
             </v-btn>
-            <v-btn small icon class="mx-3">
+            <v-btn small icon class="mx-3" @click="remove(item.id)">
               <v-icon> mdi-delete </v-icon>
             </v-btn>
           </td>
@@ -54,7 +53,17 @@
         }).catch(err => {
           console.log(err.response)
         })
+      },
+      edit: function(id){
+        this.$router.push(`/companies/${id}/edit`);
+      },
+      remove: function(id){
+      if(confirm("Você realmente deseja excluir ?")){
+        CompanyApi.delete(id).then(() => {
+          this.list()
+        })
       }
     }
   }
+}
 </script>

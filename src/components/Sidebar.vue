@@ -70,7 +70,7 @@
         action: 'fas fa-phone',
         title: 'PABX IP',
         items:[
-          {title: 'Empresa', icon: 'fas fa-building', path:'/companies'},
+          {title: 'Organização', icon: 'fas fa-building', path:'/companies'},
           {title: 'Centro do custo', icon: 'fas fa-dollar-sign', path:'/cost_centers'},
          ]
       },{
